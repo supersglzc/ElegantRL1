@@ -2,6 +2,7 @@
 import isaacgym
 import os
 import torch
+import wandb
 from elegantrl.agents import AgentPPO
 from elegantrl.train.config import Arguments
 from elegantrl.envs.IsaacGym import IsaacVecEnv, IsaacOneEnv
@@ -43,6 +44,18 @@ args.eval_times2 = 4
 
 args.worker_num = 1
 args.learner_gpus = 0
+
+cwd = f'{args.env_name}_{args.agent.__name__[5:]}_{args.learner_gpus}'
+wandb.init(
+    project=cwd,
+    entity=None,
+    sync_tensorboard=True,
+    config=vars(args),
+    name=cwd,
+    monitor_gym=True,
+    save_code=True,
+)
+
 
 # ...and train!
 if __name__ == "__main__":
